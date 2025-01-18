@@ -12,6 +12,7 @@ class ProductController extends Controller {
     public function __construct(ProductService $productService) {
         $this->productService = $productService;
     }
+
     public function search(Request $request, $product, $orderBy) {
         return $this->productService->search($request ,$product, $orderBy);
     }
