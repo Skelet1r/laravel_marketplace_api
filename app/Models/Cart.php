@@ -11,11 +11,26 @@ class Cart extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+
+    protected $fillable = [
+        'name',
+        'description',
+        'price',
+        'discount',
+        'quantity',
+        'image',
+        'color',
+        'rating',
+        'size',
+        'user_id'
+    ];
+
     public function user(): BelongsTo{
         return $this->belongsTo(User::class);
     }
 
-    public function product(): HasMany{
-        return $this->hasMany(Product::class);
+    public function product(): BelongsTo{
+        return $this->belongsTo(Product::class);
     }
 }
