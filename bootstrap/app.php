@@ -12,13 +12,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->validateCsrfTokens(except: [
-            'http://127.0.0.1:8000/createAccount',
-            'http://127.0.0.1:8000/signIn',
-            'http://127.0.0.1:8000/logout',
-            'http://127.0.0.1:8000/forgotPassword',
-            'http://127.0.0.1:8000/resetPassword*',
-            'http://127.0.0.1:8000/addToCart*',
-            'http://127.0.0.1:8000/removeFromCart*'
+            '*'
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

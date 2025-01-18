@@ -7,24 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Cart extends Model
+class Cart extends BaseProductModel
 {
     use HasFactory;
-
-    public $timestamps = false;
-
-    protected $fillable = [
-        'name',
-        'description',
-        'price',
-        'discount',
-        'quantity',
-        'image',
-        'color',
-        'rating',
-        'size',
-        'user_id'
-    ];
 
     public function user(): BelongsTo{
         return $this->belongsTo(User::class);
