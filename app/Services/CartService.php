@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Product;
 use App\Models\Cart;
+use App\Models\CartItem;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -11,43 +12,56 @@ use Illuminate\Support\Facades\Auth;
 
 class CartService {
 
-    public function getCart() {
-        $carts = Cart::where('user_id', Auth::id())->get();
+    public function getCart($cart) {
+        $cart = CartItem::where('cart_id', $cart)->get();
 
-        return response()->json($carts);
+        return response()->json($cart);
     }
-    public function addToCart(Request $request, $product) {
 
-        $product = Product::query()->findOrFail($product);
+    public function addToCart($id) {
 
-        $user_id = Auth::id();
+        $product = Product::findOrFail($id);
 
-        $cart = Cart::firstOrCreate([
-            'name' => $product->name,
-            'description' => $product->description,
-            'price' => $product->price,
-            'discount' => $product->discount,
-            'quantity' => $product->quantity,
-            'image' => $product->image,
-            'color' => $product->color,
-            'rating' => $product->rating,
-            'size' => $product->size,
-            'user_id' => $user_id,
+        $user = Auth::id();
+
+        $cart = Cart::updateOrCreate([
+            'user_id' => $user
         ]);
+
+        if ($cart->cartItems->contains('id', $id)) {
+            $cartItem = $cart->cartItems()->where('id', $id)->first();
+            $cartItem->increment('quantity');
+        }
+
+        else {
+            $cartItem = CartItem::create([
+                'name' => $product->name,
+                'description' => $product->description,
+                'price' => $product->price,
+                'discount' => $product->discount,
+                'quantity' => 1,
+                'image' => $product->image,
+                'color' => $product->color,
+                'rating' => $product->rating,
+                'size' => $product->size,
+                'cart_id' => $cart->id,
+            ]);
+        }
+
 
         return response()->json([
             'status' => 'success',
-            'cart' => $cart,
+            'item' => $cartItem
         ]);
     }
 
-    public function removeFromCart(Cart $cart) {
+    public function removeFromCart(CartItem $cartItem) {
 
-        $cart->delete();
+        $cartItem->delete();
 
         return response()->json([
             'status' => 'success',
-            'product' => $cart,
+            'product' => $cartItem,
         ]);
     }
 }

@@ -23,7 +23,7 @@ Route::controller(ProductController::class)->group(function () {
 });
 
 Route::controller(CartController::class)->group(function () {
-    Route::get('/getCart', 'getCart')->name('getCart')->middleware('auth');
-    Route::post('/addToCart/{product}', 'addToCart')->name('addToCart')->middleware('auth');
-    Route::delete('/removeFromCart/{cart}', 'removeFromCart')->name('removeFromCart')->middleware('auth');
+    Route::get('/getCart/{cart}', 'getCart')->name('getCart')->middleware('auth');
+    Route::post('/addToCart/{id}', 'addToCart')->name('addToCart')->middleware('auth');
+    Route::delete('/removeFromCart/{cartItem}', 'removeFromCart')->name('removeFromCart')->middleware('auth');
 });

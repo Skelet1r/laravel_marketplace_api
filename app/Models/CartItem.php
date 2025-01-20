@@ -2,13 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class BaseProductModel extends Model
+class CartItem extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
         'name',
         'description',
@@ -18,8 +16,13 @@ class BaseProductModel extends Model
         'image',
         'color',
         'rating',
-        'size'
+        'size',
+        'cart_id',
     ];
 
     public $timestamps = false;
+
+    public function carts(): BelongsTo {
+        return $this->belongsTo(Cart::class);
+    }
 }

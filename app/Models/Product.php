@@ -9,7 +9,5 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Product extends BaseProductModel
 {
-    public function cart(): HasMany{
-        return $this->hasMany(Cart::class);
-    }
+
 }

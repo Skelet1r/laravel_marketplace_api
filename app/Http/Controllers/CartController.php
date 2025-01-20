@@ -6,6 +6,7 @@ use App\Services\CartService;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Cart;
+use App\Models\CartItem;
 
 class CartController extends Controller
 {
@@ -14,14 +15,14 @@ class CartController extends Controller
         $this->cartService = $cartService;
     }
 
-    public function getCart() {
-        return $this->cartService->getCart();
+    public function getCart($cart) {
+        return $this->cartService->getCart($cart);
     }
-    public function addToCart(Request $request, $product) {
-        return $this->cartService->addToCart($request, $product);
+    public function addToCart($id) {
+        return $this->cartService->addToCart($id);
     }
 
-    public function removeFromCart(Cart $cart) {
-        return $this->cartService->removeFromCart($cart);
+    public function removeFromCart(CartItem $cartItem) {
+        return $this->cartService->removeFromCart($cartItem);
     }
 }
