@@ -4,9 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\belongsTo;
 
-class BaseProductModel extends Model
+
+class OrderItem extends Model
 {
+
     use HasFactory;
 
     protected $fillable = [
@@ -18,8 +21,11 @@ class BaseProductModel extends Model
         'image',
         'color',
         'rating',
-        'size'
+        'size',
+        'order_id'
     ];
 
-    public $timestamps = false;
+    public function orders(): BelongsTo {
+        return $this->belongsTo(Order::class);
+    }
 }

@@ -64,4 +64,12 @@ class CartService {
             'product' => $cartItem,
         ]);
     }
+
+    public function deleteCart(Cart $cart) {
+        $cart->delete();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Cart has been deleted'
+        ]);
+    }
 }

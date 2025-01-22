@@ -25,4 +25,8 @@ class CartController extends Controller
     public function removeFromCart(CartItem $cartItem) {
         return $this->cartService->removeFromCart($cartItem);
     }
+
+    public function deleteCart(Cart $cart) {
+        return $this->cartService->deleteCart($cart);
+    }
 }

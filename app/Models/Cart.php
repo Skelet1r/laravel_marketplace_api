@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
@@ -20,5 +21,9 @@ class Cart extends Model
 
     public function cartItems(): HasMany {
         return $this->hasMany(CartItem::class);
+    }
+
+    public function orders(): BelongsTo {
+        return $this->belongsTo(Order::class);
     }
 }
