@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
+use App\Http\Middleware\IsAdmin;
 use Illuminate\Support\Facades\Route;
 use function Pest\Laravel\get;
 
@@ -17,6 +18,7 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('/logout', 'logout')->middleware('auth')->name('logout');
     Route::post('/forgotPassword','forgotPassword')->middleware('guest')->name('forgotPassword');
     Route::post('/resetPassword','resetPassword')->middleware('guest')->name('password.reset');
+    Route::put('/setRole/{user}','setRole')->middleware('guest')->name('setRole');
 });
 
 Route::controller(ProductController::class)->group(function () {
@@ -32,4 +34,5 @@ Route::controller(CartController::class)->group(function () {
 
 Route::controller(OrderController::class)->group(function () {
     Route::post('/createOrder/{cart}', 'createOrder')->name('createOrder')->middleware('auth');
+    Route::put('/changeOrderStatus/{order}', 'changeOrderStatus')->name('changeOrderStatus')->middleware(['auth', 'IsAdmin']);
 });

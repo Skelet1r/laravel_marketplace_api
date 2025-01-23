@@ -72,4 +72,17 @@ class OrderService {
             'orderItems' => $order->orderItems,
         ]);
     }
+
+    public function changeOrderStatus(Request $request, Order $order) {
+        $request->validate([
+            'orderStatus' => 'required|string|in:delivered',
+        ]);
+
+        $order->update($request->only(['orderStatus']));
+
+        return response()->json([
+            'status' => 'success',
+            'order' => $order,
+        ]);
+    }
 }

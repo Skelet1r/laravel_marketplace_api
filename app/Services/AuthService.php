@@ -112,4 +112,17 @@ class AuthService {
         return back()->withInput($request->only('email'))
             ->withErrors(['email'=> trans($status)]);
     }
+
+    public function setRole(Request $request, User $user) {
+        $request->validate([
+            'is_admin' => 'required|boolean',
+        ]);
+
+        $user->update($request->only('is_admin'));
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Role successfully changed!'
+        ]);
+    }
 }
