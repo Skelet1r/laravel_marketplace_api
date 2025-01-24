@@ -23,8 +23,8 @@ class OrderService {
         return CartItem::where('cart_id', $cartId)->sum('price');
     }
 
-    public function createOrder(Request $request, $cartId) {
-
+    public function createOrder(Request $request, $cartId)
+    {
         $user = Auth::user();
 
         $cartItems = $this->getCart($cartId);
@@ -33,10 +33,23 @@ class OrderService {
             'phone' => 'required|string|min:9|max:12',
             'address' => 'required|string',
             'orderStatus' => 'required|string',
+            'payment_method' => 'required|string'
         ]);
 
         $cartTotal = $this->getCartTotal($cartId);
 
+        \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+
+        // Создание PaymentIntent
+        $paymentIntent = \Stripe\PaymentIntent::create([
+            'amount' => $cartTotal * 100, // Сумма в копейках/центах
+            'currency' => 'rub', // Валюта
+            'payment_method' => $request->payment_method,
+            'confirmation_method' => 'manual', // Ручное подтверждение
+            'confirm' => true, // Подтверждение платежа
+        ]);
+
+        // Создание заказа
         $order = Order::create([
             'email' => $user->email,
             'phone' => $request->phone,
@@ -46,8 +59,11 @@ class OrderService {
             'user_id' => $user->id,
             'cart_id' => $cartId,
             'orderStatus' => $request->orderStatus,
+            'payment_status' => $paymentIntent->status,
+            'payment_id' => $paymentIntent->id,
         ]);
 
+        // Добавление товаров заказа
         foreach ($cartItems as $cartItem) {
             OrderItem::create([
                 'name' => $cartItem->name,
@@ -63,14 +79,10 @@ class OrderService {
             ]);
         }
 
-//        $cart = Cart::find($cartId);
-//        if ($cart) {
-//            $cart->delete();
-//        }
-
         return response()->json([
             'order' => $order,
             'orderItems' => $order->orderItems,
+            'payment' => $paymentIntent, // Возвращаем PaymentIntent
         ]);
     }
 
