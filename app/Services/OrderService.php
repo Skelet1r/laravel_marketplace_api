@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use App\Jobs\SendEmails;
 
 class OrderService {
 
@@ -74,9 +75,14 @@ class OrderService {
     }
 
     public function changeOrderStatus(Request $request, Order $order) {
+
+        $user = Auth::user();
+
         $request->validate([
             'orderStatus' => 'required|string|in:delivered',
         ]);
+
+        SendEmails::dispatch($user);
 
         $order->update($request->only(['orderStatus']));
 
