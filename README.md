@@ -14,12 +14,12 @@
 composer install
 php artisan migrate
 php artisan key:generate
-docker-compose up -d
 php artisan db:seed
+php artisan serve
         </code></pre></p>
     </li>
     <li>3. Затем перейдите в вашем браузере по этому адрессу
-        <p><pre><code>http://localhost:8085/</code></pre></p>
+        <p><pre><code>http://127.0.0.1:8000/</code></pre></p>
     </li>
 </ol>
 
