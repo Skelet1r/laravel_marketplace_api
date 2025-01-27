@@ -21,4 +21,6 @@ php artisan serve
     </li>
 </ol>
 
+<p>Ссылка на коллекцию postman https://app.getpostman.com/join-team?invite_code=a9058db2008cfb189dd3d5bebdb78e47c3e468f2b528715a2aaa905a29592abf</p>
+
 <p>Установка завершена!</p>
